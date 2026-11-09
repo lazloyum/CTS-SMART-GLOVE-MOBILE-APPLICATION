@@ -1,0 +1,195 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>GloveCare · CTS Smart Glove</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap">
+<style>
+:root{--bg:#F5F9FC;--card:#fff;--ink:#0F2742;--mute:#5F7690;--line:#E1EBF3;--blue:#2F7DD1;--bs:#E6F1FB;--teal:#0E9F9A;--ts:#DDF4F2;--ok:#1E9E6A;--oks:#DFF5EA;--warn:#E8801E;--ws:#FDEBD8;--sh:0 4px 18px rgba(15,39,66,.08)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0B1624;--card:#13243A;--ink:#EAF2FA;--mute:#93A8BF;--line:#22364F;--bs:#173555;--ts:#10373A;--oks:#12392B;--ws:#412C14;--sh:0 4px 18px rgba(0,0,0,.35)}}
+:root[data-theme=dark]{--bg:#0B1624;--card:#13243A;--ink:#EAF2FA;--mute:#93A8BF;--line:#22364F;--bs:#173555;--ts:#10373A;--oks:#12392B;--ws:#412C14;--sh:0 4px 18px rgba(0,0,0,.35)}
+*{box-sizing:border-box;margin:0}html,body{height:100%}
+body{font-family:Manrope,system-ui,sans-serif;background:var(--bg);color:var(--ink);display:flex;justify-content:center;align-items:center}
+#app{width:100%;max-width:430px;height:100%;max-height:900px;background:var(--bg);position:relative;display:flex;flex-direction:column;overflow:hidden;padding-top:env(safe-area-inset-top,0)}
+@media(min-width:500px){#app{height:min(100%,860px);border-radius:32px;box-shadow:0 20px 60px rgba(15,39,66,.2);border:1px solid var(--line)}}
+#scr{flex:1;overflow-y:auto;padding:18px 18px 24px;animation:in .25s ease}
+@keyframes in{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:none}}
+h1{font-size:24px;font-weight:800;letter-spacing:-.4px}h2{font-size:17px;font-weight:800;margin:20px 0 10px}h3{font-size:15px;font-weight:700}
+p,.m{color:var(--mute);font-size:13.5px;line-height:1.5}.s{font-size:12px}
+.card{background:var(--card);border-radius:20px;box-shadow:var(--sh);padding:16px;border:1px solid var(--line)}
+.row{display:flex;align-items:center;gap:12px}.sp{justify-content:space-between}.col{display:flex;flex-direction:column;gap:12px}.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+button{font:inherit;cursor:pointer;border:0;color:inherit;background:none}
+button:focus-visible,input:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.btn{width:100%;padding:15px;border-radius:16px;background:var(--teal);color:#fff;font-weight:800;font-size:15px;display:flex;justify-content:center;gap:8px;align-items:center;transition:transform .1s}
+.btn:active{transform:scale(.98)}.btn.sec{background:var(--bs);color:var(--blue)}.btn.gh{background:none;color:var(--mute);font-weight:700}.btn.sm{width:auto;padding:9px 14px;font-size:13px;border-radius:12px}.btn.warn{background:var(--warn)}
+.ic{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:99px;font-size:12px;font-weight:700;background:var(--bs);color:var(--blue)}
+.chip.ok{background:var(--oks);color:var(--ok)}.chip.bad{background:var(--ws);color:var(--warn)}.chip.off{background:var(--line);color:var(--mute)}.chip.hold{background:var(--ts);color:var(--teal)}
+.dot{width:8px;height:8px;border-radius:50%;background:currentColor}
+.ib{width:42px;height:42px;border-radius:14px;background:var(--card);box-shadow:var(--sh);display:grid;place-items:center;border:1px solid var(--line)}
+.av{width:42px;height:42px;border-radius:50%;background:var(--teal);color:#fff;display:grid;place-items:center;font-weight:800}
+.thumb{width:62px;height:62px;border-radius:16px;background:var(--ts);color:var(--teal);display:grid;place-items:center;flex:none}
+.opt{display:flex;gap:14px;align-items:center;text-align:left;width:100%;padding:16px}.opt .thumb{background:var(--bs);color:var(--blue)}
+.nav{display:flex;border-top:1px solid var(--line);background:var(--card);padding:8px 8px calc(8px + env(safe-area-inset-bottom,0))}
+.nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:700;color:var(--mute);padding:6px}.nav .on{color:var(--teal)}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}.tabs button{padding:8px 14px;border-radius:99px;background:var(--card);border:1px solid var(--line);font-weight:700;font-size:13px;white-space:nowrap}.tabs .on{background:var(--teal);color:#fff;border-color:var(--teal)}
+.bar{height:10px;border-radius:9px;background:var(--line);overflow:hidden}.bar i{display:block;height:100%;background:var(--teal);border-radius:9px;transition:width .2s}
+.big{font-size:24px;font-weight:800;color:var(--ink)}.ctr{text-align:center}
+.glove{display:block;margin:10px auto}
+.ring{position:relative;width:76px;height:76px;flex:none}.ring b{position:absolute;inset:0;display:grid;place-items:center;font-size:15px}
+.scan{position:relative;height:150px;display:grid;place-items:center}.scan i{position:absolute;width:60px;height:60px;border-radius:50%;border:2px solid var(--blue);animation:pu 2s infinite;opacity:0}.scan i:nth-child(2){animation-delay:.6s}.scan i:nth-child(3){animation-delay:1.2s}
+@keyframes pu{0%{transform:scale(.6);opacity:.8}100%{transform:scale(2.4);opacity:0}}
+.spin{width:46px;height:46px;border-radius:50%;border:4px solid var(--line);border-top-color:var(--teal);animation:sp 1s linear infinite;margin:18px auto}@keyframes sp{to{transform:rotate(360deg)}}
+.net{display:flex;justify-content:space-between;align-items:center;width:100%;padding:13px 14px;border-radius:14px;border:2px solid var(--line);background:var(--card);font-weight:700}.net.on{border-color:var(--teal);background:var(--ts)}
+input[type=password],input[type=text]{width:100%;padding:14px;border-radius:14px;border:2px solid var(--line);background:var(--card);color:var(--ink);font:inherit}
+#hand{height:300px;position:relative;border-radius:24px;background:radial-gradient(circle at 50% 40%,var(--bs),var(--card));border:1px solid var(--line);overflow:hidden}
+#hand canvas{display:block;touch-action:none;cursor:grab}#hand .z{position:absolute;right:10px;top:10px;display:flex;flex-direction:column;gap:6px}#hand .z button{width:34px;height:34px;border-radius:10px;background:var(--card);box-shadow:var(--sh);font-weight:800}
+#hand .hint{position:absolute;left:12px;bottom:8px;font-size:11px;color:var(--mute)}
+.banner{border-radius:18px;padding:14px 16px;font-weight:800;font-size:16px;background:var(--bs);color:var(--blue);transition:background .2s,color .2s}.banner.ok{background:var(--oks);color:var(--ok)}.banner.bad{background:var(--ws);color:var(--warn)}.banner.hold{background:var(--ts);color:var(--teal)}
+.led{width:14px;height:14px;border-radius:50%;background:var(--line)}.led.ok{background:var(--ok);box-shadow:0 0 10px var(--ok)}.led.bad{background:var(--warn);box-shadow:0 0 10px var(--warn)}.led.bl{background:var(--blue);box-shadow:0 0 10px var(--blue)}
+.vib.on{animation:vb .15s 6}@keyframes vb{50%{transform:translateX(3px)}}
+.wk{display:flex;align-items:flex-end;gap:8px;height:120px}.wk div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:5px;height:100%;font-size:11px;color:var(--mute)}.wk i{width:100%;background:var(--teal);border-radius:8px 8px 4px 4px;min-height:3px}
+.tg{width:46px;height:26px;border-radius:99px;background:var(--line);position:relative;flex:none}.tg i{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.2s}.tg.on{background:var(--teal)}.tg.on i{left:23px}
+#toast{position:absolute;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:13px;font-weight:700;opacity:0;transition:.25s;pointer-events:none;white-space:nowrap;z-index:9}#toast.on{opacity:1}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body><div id="app"><div id="scr"></div><nav class="nav" id="nav"></nav><div id="toast"></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const P={home:'M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z',list:'M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01',chart:'M4 20V10M10 20V4M16 20v-8M22 20H2',user:'M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z',bt:'M6.5 6.5l11 11L12 23V1l5.5 5.5-11 11',wifi:'M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0M12 20h.01M2 9a15 15 0 0 1 20 0',bell:'M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0',play:'M6 4l14 8-14 8z',pause:'M8 4v16M16 4v16',clock:'M12 7v5l3 2M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z',check:'M5 12l5 5 9-10',back:'M15 5l-7 7 7 7',vib:'M2 8v8M6 6v12M18 6v12M22 8v8M10 9h4v6h-4z'};
+const ic=n=>`<svg class="ic" viewBox="0 0 24 24"><path d="${P[n]}"/></svg>`;
+const hi=(c,s=44)=>{let f='';[22,26,24,18].forEach((v,i)=>{const h=v*(1-c*.65);f+=`<rect x="${8+i*7.5}" y="${30-h}" width="6" height="${h+8}" rx="3"/>`});return `<svg width="${s}" height="${s}" viewBox="0 0 44 44" fill="currentColor"><rect x="6" y="28" width="30" height="13" rx="6"/>${f}<rect x="35" y="24" width="5" height="12" rx="2.5" transform="rotate(-30 37 30)"/></svg>`};
+const Z={mcp:0,pip:0,dip:0,wr:0};
+const EX=[
+{id:'hook',n:'Hook Fist',c:'Tendon gliding',d:'Bends the finger tips while the knuckles stay straight.',min:3,reps:10,hold:3,pose:{mcp:10,pip:75,dip:70,wr:0},main:'pip',cue:'Adjust your index finger.',steps:['Start with your fingers straight.','Bend only the top two joints of each finger.','Hold, then open your hand again.']},
+{id:'fist',n:'Full Fist',c:'Tendon gliding',d:'Curls every finger joint into a gentle fist.',min:4,reps:10,hold:3,pose:{mcp:80,pip:90,dip:60,wr:0},main:'pip',cue:'Curl your fingers a little more.',steps:['Start with your hand open.','Curl all finger joints into a loose fist.','Hold, then open slowly.']},
+{id:'table',n:'Tabletop',c:'Tendon gliding',d:'Bends the knuckles while the fingers stay flat.',min:3,reps:10,hold:3,pose:{mcp:85,pip:5,dip:5,wr:0},main:'mcp',cue:'Keep your fingers straight.',steps:['Start with your hand open.','Bend at the knuckles only, like a tabletop.','Hold, then return to straight.']},
+{id:'straight',n:'Straight Fist',c:'Tendon gliding',d:'Folds the fingers down to the palm, thumb side up.',min:4,reps:8,hold:3,pose:{mcp:70,pip:80,dip:10,wr:0},main:'pip',cue:'Bend your middle joints more.',steps:['Start with your hand open.','Fold the fingers at the first and middle joints.','Hold, then open your hand.']},
+{id:'median',n:'Median Nerve Glide',c:'Nerve gliding',d:'Extends the wrist with straight fingers to move the median nerve.',min:5,reps:8,hold:5,pose:{mcp:5,pip:5,dip:5,wr:60},main:'wr',cue:'Keep your wrist in the target position.',steps:['Hold your arm out with fingers together.','Bend the wrist back, palm facing forward.','Hold gently, then relax the wrist.']},
+{id:'slide',n:'Nerve Slider',c:'Nerve gliding',d:'Combines a light finger curl with wrist extension.',min:5,reps:8,hold:4,pose:{mcp:30,pip:30,dip:20,wr:40},main:'wr',cue:'Keep your wrist in the target position.',steps:['Rest your forearm with your hand open.','Lift the wrist while curling the fingers lightly.','Hold, then return to neutral.']}];
+EX.forEach(e=>{e.cv=Math.min(1,(e.pose.mcp+e.pose.pip)/170);e.ml={pip:'Middle joint (PIP)',mcp:'Knuckle (MCP)',wr:'Wrist extension'}[e.main]});
+const S={route:'connect',step:'choose',conn:null,net:null,pw:'',ex:EX[0],f:'All',today:{ex:1,reps:10,sec:260},sess:[{n:'Hook Fist',d:'Yesterday',reps:10,bad:2,sec:240},{n:'Median Nerve Glide',d:'Sunday',reps:8,bad:1,sec:300},{n:'Full Fist',d:'Saturday',reps:10,bad:3,sec:270},{n:'Tabletop',d:'Friday',reps:10,bad:1,sec:200}],pref:'Bluetooth',snd:true,vibp:true};
+const $=s=>document.querySelector(s),mm=s=>Math.round(s/60);
+function toast(t){const e=$('#toast');e.textContent=t;e.className='on';clearTimeout(toast.t);toast.t=setTimeout(()=>e.className='',1800)}
+const cm=()=>S.conn?`<span class="chip ok"><i class="dot"></i>Connected via ${S.conn}</span>`:`<span class="chip off"><i class="dot"></i>Not Connected</span>`;
+const glove=(s=170)=>`<svg class="glove" width="${s}" height="${s}" viewBox="0 0 120 120"><g fill="#E6F1FB" stroke="#2F7DD1" stroke-width="2.5"><rect x="30" y="58" width="50" height="46" rx="18"/><rect x="31" y="20" width="10" height="46" rx="5"/><rect x="43" y="12" width="10" height="52" rx="5"/><rect x="55" y="16" width="10" height="48" rx="5"/><rect x="67" y="24" width="10" height="40" rx="5"/><rect x="76" y="58" width="10" height="28" rx="5" transform="rotate(-35 80 62)"/></g><rect x="30" y="96" width="50" height="14" rx="5" fill="#0E9F9A"/><g fill="#0E9F9A"><circle cx="36" cy="30" r="3"/><circle cx="48" cy="24" r="3"/><circle cx="60" cy="28" r="3"/><circle cx="72" cy="34" r="3"/></g></svg>`;
+const exCard=e=>`<div class="card row" data-ex="${e.id}" style="cursor:pointer"><div class="thumb">${hi(e.cv)}</div><div style="flex:1;min-width:0"><div class="row sp"><h3>${e.n}</h3></div><div class="m s">${e.c} · ${e.min} min · ${e.reps} reps</div><p class="s" style="margin:4px 0 8px">${e.d}</p><span class="chip">View Exercise</span></div></div>`;
+const hdr=(t,b)=>`<div class="row" style="margin-bottom:14px"><button class="ib" data-go="${b}" aria-label="Back">${ic('back')}</button><h1 style="font-size:19px">${t}</h1></div>`;
+
+const V={
+connect(){const st=S.step;let b='';
+ if(st=='choose')b=`<div class="col" style="margin-top:6px"><button class="card opt" data-a="bt"><div class="thumb">${ic('bt')}</div><div><h3>Connect via Bluetooth</h3><p>Connect directly to your smart glove using Bluetooth.</p></div></button><button class="card opt" data-a="wifi"><div class="thumb">${ic('wifi')}</div><div><h3>Connect via Wi-Fi</h3><p>Connect your smart glove through a Wi-Fi network.</p></div></button><button class="btn gh" data-a="skip">Skip for Demo</button></div>`;
+ if(st=='bt-scan')b=`<div class="ctr"><div class="scan"><i></i><i></i><i></i><span style="color:var(--blue)">${ic('bt')}</span></div><h3>Searching for Bluetooth Devices...</h3><p>Keep the glove switched on and nearby.</p></div>`;
+ if(st=='bt-found')b=`<h3 style="margin:8px 0">1 device found</h3><div class="card row sp"><div class="row"><div class="thumb" style="width:50px;height:50px">${ic('bt')}</div><div><h3>CTS Smart Glove</h3><p class="s">Signal: Strong</p></div></div><button class="btn sm" data-a="btconn" style="width:auto">Connect</button></div>`;
+ if(st=='pairing')b=`<div class="ctr"><div class="spin"></div><h3>Pairing with CTS Smart Glove...</h3><p>This takes a few seconds.</p></div>`;
+ if(st=='wifi')b=`<h3 style="margin:8px 0">Available networks</h3><div class="col" style="gap:8px">${['Home_WiFi_5G','Clinic-Guest','CTS_Lab_Network'].map(n=>`<button class="net ${S.net==n?'on':''}" data-net="${n}">${n}<span class="m s">${S.net==n?'Selected':'Secured'}</span></button>`).join('')}<input id="pw" type="password" placeholder="Wi-Fi password" value="${S.pw}" aria-label="Wi-Fi password"><button class="btn" data-a="wconn">Connect</button><button class="btn gh" data-a="back">Back</button></div>`;
+ if(st=='done')b=`<div class="ctr card" style="margin-top:8px"><span class="chip ok" style="font-size:14px"><i class="dot"></i>Connected via ${S.conn}</span><p style="margin:10px 0 0">CTS Smart Glove is ready.</p></div><button class="btn" data-a="cont" style="margin-top:16px">Continue</button>`;
+ return `<div class="ctr"><div class="row" style="justify-content:center;gap:8px;color:var(--teal);font-weight:800"><svg class="ic" viewBox="0 0 24 24"><path d="M7 21v-4M10 21v-9M13.5 21v-9M17 21v-6M7 17V8M10 12V5M13.5 12V6M17 15v-4"/></svg>GloveCare</div><h1 style="margin-top:14px">Connect Your Smart Glove</h1><p style="margin-top:6px">Connect the glove so GloveCare can guide and track your carpal tunnel exercises.</p>${st=='choose'||st=='done'?glove():glove(110)}<div style="margin-bottom:12px">${cm()}</div></div>${b}`},
+calib(){const T=[['Flat hand','Place your hand flat and relaxed with fingers straight.',0],['Full fist','Curl all fingers into a comfortable fist.',1],['Wrist back','Bend your wrist backward as far as feels comfortable.',.15]],i=S.cs;
+ const dots=`<div class="row" style="justify-content:center;gap:8px;margin:14px 0">${T.map((_,k)=>`<i class="dot" style="width:10px;height:10px;color:${k<i?'var(--ok)':k==i?'var(--teal)':'var(--line)'}"></i>`).join('')}</div>`;
+ if(i>=3)return `<div class="ctr" style="margin-top:30px"><div class="av" style="width:64px;height:64px;margin:0 auto 10px;background:var(--ok)">${ic('check')}</div><h1>Calibration complete</h1><p style="margin-top:6px">Your glove now has your open, closed and wrist positions. Values are simulated in this demo.</p></div><div class="card col" style="gap:10px;margin-top:18px">${T.map(t=>`<div class="row sp"><span>${t[0]}</span><span class="chip ok">Captured</span></div>`).join('')}</div><button class="btn" data-a="caldone" style="margin-top:16px">Go to Dashboard</button>`;
+ return `<div class="ctr"><h1>Calibrate Your Glove</h1><p style="margin-top:6px">A quick 3-step setup so movements are measured to your hand. Step ${i+1} of 3.</p>${dots}</div><div class="card ctr"><div style="color:var(--teal)">${hi(T[i][2],110)}</div><h3 style="margin-top:6px">${T[i][0]}</h3><p style="margin:4px 0 14px">${T[i][1]}</p><div class="bar"><i id="cb" style="width:0"></i></div></div><button class="btn" data-a="calstart" style="margin-top:16px">Hold &amp; capture</button><button class="btn gh" data-a="calskip" style="margin-top:6px">Skip calibration</button>`},
+home(){const t=S.today,h=new Date().getHours(),pc=Math.min(100,Math.round(t.reps/40*100));
+ return `<div class="row sp"><div class="row"><div class="av">MR</div><div><p class="s">${h<12?'Good Morning':h<18?'Good Afternoon':'Good Evening'}</p><h3 style="font-size:17px">Maria Reyes</h3></div></div><button class="ib" data-a="bell" aria-label="Notifications">${ic('bell')}</button></div>
+ <div class="card" style="margin-top:18px"><div class="row sp"><h3>Smart Glove</h3>${cm()}</div><div class="row sp" style="margin-top:10px"><div><p style="color:var(--ink);font-weight:700">CTS Smart Glove</p><p class="s">${S.conn?'Connection: '+S.conn:'Reconnect to track movement'}</p></div>${S.conn?'<button class="btn sec sm" data-a="disc">Disconnect</button>':'<button class="btn sm" data-a="recon">Reconnect</button>'}</div></div>
+ <button class="btn" data-go="lib" style="margin-top:14px;padding:18px;font-size:16px">${ic('play')} Start Exercise</button>
+ <h2>Daily activity</h2><div class="card row"><div class="ring"><svg viewBox="0 0 36 36" width="76" height="76"><circle cx="18" cy="18" r="15" fill="none" stroke="var(--line)" stroke-width="4"/><circle cx="18" cy="18" r="15" fill="none" stroke="var(--teal)" stroke-width="4" stroke-linecap="round" stroke-dasharray="${pc*.942} 100" transform="rotate(-90 18 18)"/></svg><b>${pc}%</b></div><div class="g3" style="flex:1;text-align:center"><div><div class="big">${t.ex}</div><p class="s">Exercises</p></div><div><div class="big">${t.reps}</div><p class="s">Valid reps</p></div><div><div class="big">${mm(t.sec)}m</div><p class="s">Duration</p></div></div></div><p class="s" style="margin-top:6px">Daily goal: 40 valid repetitions (demo value).</p>
+ <h2>Recommended exercises</h2><div class="col">${[EX[0],EX[4],EX[2]].map(exCard).join('')}</div>`},
+lib(){const l=S.f=='All'?EX:EX.filter(e=>e.c==S.f);return `<h1>Exercise Library</h1><p style="margin:4px 0 12px">Sample CTS exercises. Parameters are demonstration data pending therapist validation.</p><div class="tabs">${['All','Tendon gliding','Nerve gliding'].map(f=>`<button class="${S.f==f?'on':''}" data-f="${f}">${f}</button>`).join('')}</div><div class="col" style="margin-top:12px">${l.map(exCard).join('')}</div>`},
+detail(){const e=S.ex,p=e.pose;return `${hdr(e.n,'lib')}<div class="card ctr" style="color:var(--teal)">${hi(e.cv,90)}<p class="s">Target position preview</p></div><div class="row" style="margin:14px 0 4px"><span class="chip">${e.c}</span><span class="chip off">${ic('clock').replace('class="ic"','class="ic" style="width:14px;height:14px"')}${e.min} min</span></div><p>${e.d} It helps tendons and the median nerve move smoothly through the carpal tunnel.</p>
+ <h2>How to do it</h2><div class="col" style="gap:8px">${e.steps.map((s,i)=>`<div class="card row" style="padding:12px"><div class="av" style="width:30px;height:30px;font-size:13px;flex:none;background:var(--blue)">${i+1}</div><p style="color:var(--ink)">${s}</p></div>`).join('')}</div>
+ <h2>Targets</h2><div class="card col" style="gap:8px;font-size:13.5px">${[['Fingers','Index to little finger'],['Knuckle (MCP)',p.mcp+'° ± 10°'],['Middle joint (PIP)',p.pip+'° ± 10°'],['Wrist',p.wr?p.wr+'° extension':'Neutral (0°)'],['Hold',e.hold+' seconds'],['Repetitions',e.reps]].map(r=>`<div class="row sp"><span class="m">${r[0]}</span><b>${r[1]}</b></div>`).join('')}</div>
+ <button class="btn" data-a="begin" style="margin-top:16px">Begin Exercise</button>`},
+monitor(){const e=S.ex;return `<div class="row sp" style="margin-bottom:10px"><div class="row"><button class="ib" data-a="leave" aria-label="Back">${ic('back')}</button><div><h3>${e.n}</h3><p class="s">${e.c}</p></div></div><span class="chip off" id="mst">Ready</span></div>
+ <div id="hand"><div class="z"><button data-a="zin" aria-label="Zoom in">+</button><button data-a="zout" aria-label="Zoom out">−</button></div><span class="hint">Drag to rotate · simulated readings</span></div>
+ <div class="banner" id="bn" style="margin-top:12px">Press Start when you are ready.</div>
+ <p style="margin:8px 2px" id="stp"></p>
+ <div class="card" style="margin-top:6px"><div class="row sp"><span class="m">${e.ml}</span><b id="ang"></b></div><div class="bar" style="margin:8px 0"><i id="angb" style="width:0"></i></div><div class="row sp s m"><span>Target ${e.pose[e.main]}°</span><span>Wrist: ${e.pose.wr?e.pose.wr+'° extended':'Neutral'}</span></div><div class="row sp s m" style="margin-top:10px"><span>Hold ${e.hold}s</span><span id="hl"></span></div><div class="bar" style="margin-top:4px"><i id="hb" style="width:0;background:var(--blue)"></i></div></div>
+ <div class="g3" style="margin-top:10px"><div class="card ctr" style="padding:12px"><div class="big" id="rp">0/${e.reps}</div><p class="s">Valid reps</p></div><div class="card ctr" style="padding:12px"><div class="big" id="bd">0</div><p class="s">Incorrect</p></div><div class="card ctr" style="padding:12px"><div class="big" id="tm">0:00</div><p class="s">Timer</p></div></div>
+ <div class="card row sp" style="margin-top:10px;padding:12px"><div class="row"><i class="led" id="led"></i><span class="s m">LED</span><span class="vib m" id="vib" style="margin-left:8px">${ic('vib')}</span><span class="s m">Vibration</span></div><span class="s m">Preview only · simulated</span></div>
+ <div class="row" style="margin-top:12px"><button class="btn" id="b1" data-a="start">${ic('play')} Start</button><button class="btn sec" data-a="finish" style="width:auto;padding:15px 18px">Finish Exercise</button></div>`},
+results(){const r=S.last,e=r.e,pct=Math.min(100,Math.round(r.reps/e.reps*100)),acc=r.reps+r.bad?Math.round(r.reps/(r.reps+r.bad)*100):0;
+ return `<div class="ctr"><div class="av" style="width:64px;height:64px;margin:6px auto;background:var(--ok)">${ic('check')}</div><h1>${pct>=100?'Session complete':'Session ended early'}</h1><p>${e.n}</p></div><div class="card" style="margin-top:16px"><div class="row sp"><b>Completion</b><b>${pct}%</b></div><div class="bar" style="margin:8px 0 14px"><i style="width:${pct}%"></i></div><div class="g3 ctr"><div><div class="big">${r.reps}</div><p class="s">Valid reps</p></div><div><div class="big">${r.bad}</div><p class="s">Incorrect</p></div><div><div class="big">${Math.floor(r.sec/60)}:${String(Math.round(r.sec%60)).padStart(2,'0')}</div><p class="s">Duration</p></div></div></div><div class="card" style="margin-top:12px"><h3>Summary</h3><p style="margin-top:4px">${acc>=80?'Well controlled movements. Keep the same pace next session.':acc>=60?'Good effort. Slow down a little to reach the target position more often.':'Take it slowly and review the exercise guide before your next try.'} Movement accuracy: ${acc}% (simulated data).</p></div><div class="col" style="margin-top:16px"><button class="btn" data-a="repeat">Repeat Exercise</button><button class="btn sec" data-go="progress">View Progress</button><button class="btn gh" data-go="home">Return to Dashboard</button></div>`},
+progress(){const t=S.today,wk=[12,18,9,22,15,0,mm(t.sec)],mx=Math.max(...wk),L=['Wed','Thu','Fri','Sat','Sun','Mon','Today'],all=S.sess;
+ return `<h1>Your Progress</h1><p style="margin:4px 0 12px">Demo data only.</p><div class="g3 ctr"><div class="card" style="padding:12px"><div class="big">${18+S.added||18}</div><p class="s">Sessions</p></div><div class="card" style="padding:12px"><div class="big">${164+t.reps-10}</div><p class="s">Valid reps</p></div><div class="card" style="padding:12px"><div class="big">${142+mm(t.sec)-4}m</div><p class="s">Total time</p></div></div>
+ <h2>This week (minutes)</h2><div class="card"><div class="wk">${wk.map((v,i)=>`<div><span>${v}</span><i style="height:${v/mx*80}%;${i==6?'background:var(--blue)':''}"></i><span>${L[i]}</span></div>`).join('')}</div></div>
+ <h2>Summary</h2><div class="card"><p style="color:var(--ink)">You exercised on 6 of the last 7 days. Accuracy improved from 68% to 81% over two weeks.</p></div>
+ <h2>Recent sessions</h2><div class="col" style="gap:8px">${all.map(s=>`<div class="card row sp" style="padding:12px"><div><h3>${s.n}</h3><p class="s">${s.d} · ${mm(s.sec)} min</p></div><div style="text-align:right"><b>${s.reps} reps</b><p class="s">${s.bad} incorrect</p></div></div>`).join('')}</div>`},
+profile(){const tg=(k,l)=>`<button class="row sp" style="width:100%;padding:8px 0" data-t="${k}"><span>${l}</span><span class="tg ${S[k]?'on':''}"><i></i></span></button>`;
+ return `<div class="ctr"><div class="av" style="width:76px;height:76px;margin:6px auto;font-size:24px">MR</div><h1>Maria Reyes</h1><p>Age 42 · Right hand affected</p></div>
+ <h2>Smart Glove</h2><div class="card col" style="gap:8px">${[['Device','CTS Smart Glove'],['Status',S.conn?'Connected via '+S.conn:'Not connected'],['Firmware','Demo build'],['Battery','82% (sample)'],['Calibration',S.cal?'Completed':'Not done']].map(r=>`<div class="row sp"><span class="m">${r[0]}</span><b>${r[1]}</b></div>`).join('')}<div class="tabs" style="margin-top:4px">${['Bluetooth','Wi-Fi'].map(c=>`<button class="${S.pref==c?'on':''}" data-pref="${c}">${c}</button>`).join('')}</div><p class="s">Preferred connection</p><button class="btn sec sm" data-a="recal">Recalibrate glove</button></div>
+ <h2>Settings</h2><div class="card">${tg('snd','Sound cues')}${tg('vibp','Vibration preview')}<button class="row sp" style="width:100%;padding:8px 0" data-a="theme"><span>Switch dark / light</span>${ic('chart').replace(/<path.*\/>/,'<circle cx="12" cy="12" r="8"/>')}</button></div>
+ <h2>About</h2><div class="card"><p>GloveCare is a thesis prototype for an ESP32 smart glove that monitors CTS therapeutic exercises with rule-based movement classification. All readings here are simulated. It is not a medical device and gives no diagnosis.</p></div>`}};
+
+let H=null;
+function render(){const r=S.route;clearInterval(S.ci);if(r!='monitor'){clearInterval(S.iv);H=null}
+ $('#scr').innerHTML=V[r]();$('#scr').scrollTop=0;
+ const tabs=[['home','home','Home'],['lib','list','Exercises'],['progress','chart','Progress'],['profile','user','Profile']];const main=tabs.some(t=>t[0]==r)||r=='detail';
+ $('#nav').style.display=main?'flex':'none';const act=r=='detail'?'lib':r;
+ $('#nav').innerHTML=tabs.map(t=>`<button class="${act==t[0]?'on':''}" data-go="${t[0]}">${ic(t[1])}${t[2]}</button>`).join('');
+ if(r=='monitor'){H=mkHand($('#hand'));ui()}}
+function go(r){S.route=r;if(r=='connect'&&S.conn===null&&S.step=='done')S.step='choose';render()}
+
+function mkHand(el){const W=el.clientWidth||340,Ht=el.clientHeight||300,R=Math.PI/180;
+ const rd=new THREE.WebGLRenderer({antialias:true,alpha:true});rd.setPixelRatio(Math.min(devicePixelRatio,2));rd.setSize(W,Ht);el.prepend(rd.domElement);
+ const sc=new THREE.Scene(),cam=new THREE.PerspectiveCamera(38,W/Ht,.1,100);cam.position.set(0,.9,13);cam.lookAt(0,.9,0);
+ sc.add(new THREE.HemisphereLight(0xffffff,0x7aa6cf,1.05));const rim=new THREE.DirectionalLight(0x9fd8ff,.6);rim.position.set(-5,3,-6);sc.add(rim);const dl=new THREE.DirectionalLight(0xffffff,.9);dl.position.set(4,6,8);sc.add(dl);
+ const mat=new THREE.MeshStandardMaterial({color:0xeebb98,roughness:.55}),cuff=new THREE.MeshStandardMaterial({color:0x0e9f9a,roughness:.45}),nail=new THREE.MeshStandardMaterial({color:0xf8dccb,roughness:.25}),sens=new THREE.MeshStandardMaterial({color:0x0e9f9a,roughness:.4}),navy=new THREE.MeshStandardMaterial({color:0x0f2742,roughness:.4});
+ const root=new THREE.Group();root.rotation.set(.1,-.75,0);sc.add(root);
+ const add=(p,g,m,x,y,z)=>{const o=new THREE.Mesh(g,m);o.position.set(x,y,z);p.add(o);return o};
+ const sph=(p,r,sx,sy,sz,x,y,z,m=mat)=>{const o=add(p,new THREE.SphereGeometry(r,32,24),m,x,y,z);o.scale.set(sx,sy,sz);return o};
+ add(root,new THREE.CylinderGeometry(.9,1.05,3.2,40),mat,0,-2.3,0);add(root,new THREE.CylinderGeometry(1.12,1.12,.9,40),cuff,0,-1.2,0);add(root,new THREE.TorusGeometry(1.12,.05,12,40),navy,0,-.75,0).rotation.x=Math.PI/2;
+ const wr=new THREE.Group();wr.position.set(0,-.9,0);root.add(wr);
+ sph(wr,1,1.28,1.2,.5,0,1.1,0);sph(wr,1,1.15,.8,.5,0,.4,0);sph(wr,1,1.38,.5,.47,0,1.85,0);sph(wr,1,.75,.85,.45,1.2,.6,.1);
+ add(wr,new THREE.BoxGeometry(1,.7,.16),navy,0,1.1,-.55);add(wr,new THREE.SphereGeometry(.07,12,8),new THREE.MeshBasicMaterial({color:0x2be39a}),.3,1.3,-.65);add(wr,new THREE.BoxGeometry(1.1,.05,.06),sens,0,.55,-.5);
+ const mk=(x,y,L,rad,rz,k)=>{const js=[],ls=[.95,.65,.5].map(v=>v*L);let p=wr;ls.forEach((l,i)=>{const r=rad*(1-.1*i),r2=rad*(1-.1*(i+1)),g=new THREE.Group();g.position.set(i?0:x,i?ls[i-1]:y,0);if(!i)g.rotation.z=rz;p.add(g);add(g,new THREE.CylinderGeometry(r2,r,l,32),mat,0,l/2,0);add(g,new THREE.SphereGeometry(r,24,16),mat,0,0,0);add(g,new THREE.BoxGeometry(r*.5,l*.9,.05),sens,0,l/2,-r*.95);if(i==2){sph(g,r2,1,1.1,1,0,l,0);sph(g,r2,.8,.9,.3,0,l*.72,-r2*.72,nail)}js.push(g);p=g});return{js,k}};
+ const F=[mk(.95,2.3,1.9,.33,0,1),mk(.32,2.3,2.15,.35,0,1),mk(-.32,2.3,2,.33,0,1),mk(-.95,2.3,1.6,.29,0,1),mk(1.25,.7,1.4,.36,-.8,.5)];
+ const cur={...Z},tgt={...Z},h={cur,tgt,set(p){Object.assign(tgt,p)},glow(c){mat.emissive.setHex(c);mat.emissiveIntensity=c?.4:0}};
+ let dn=0,lx=0,ly=0;const cv=rd.domElement;
+ cv.addEventListener('pointerdown',e=>{dn=1;h.u=1;lx=e.clientX;ly=e.clientY;cv.setPointerCapture(e.pointerId)});
+ cv.addEventListener('pointermove',e=>{if(!dn)return;root.rotation.y+=(e.clientX-lx)*.012;root.rotation.x=Math.max(-.8,Math.min(.8,root.rotation.x+(e.clientY-ly)*.008));lx=e.clientX;ly=e.clientY});
+ cv.addEventListener('pointerup',()=>dn=0);cv.addEventListener('wheel',e=>{e.preventDefault();h.zoom(e.deltaY*.01)},{passive:false});
+ h.zoom=d=>{cam.position.z=Math.max(7,Math.min(18,cam.position.z+d))};
+ (function loop(){if(!el.isConnected){rd.dispose();return}
+  for(const k in cur)cur[k]+=(tgt[k]-cur[k])*.07;
+  F.forEach(f=>f.js.forEach((j,i)=>j.rotation.x=cur[['mcp','pip','dip'][i]]*R*f.k));wr.rotation.x=-cur.wr*R;
+  if(!h.u)root.rotation.y=-.75+Math.sin(performance.now()/2500)*.25;
+  rd.render(sc,cam);requestAnimationFrame(loop)})();return h}
+
+const stat={rest:['','Ready'],move:['','Moving'],ok:['ok','Correct Position'],hold:['hold','Hold Position'],rep:['ok','Valid Repetition'],bad:['bad','Incorrect Position']};
+function ui(){const m=S.mon,e=S.ex;if(!m||!$('#bn'))return;
+ let k=m.ph,msg={rest:m.run?'Open your hand and relax.':'Press Start when you are ready.',move:'Move into the target position.',ok:'Great! Correct Position.',hold:'Hold the position.',rep:'Repetition Completed!',bad:e.cue}[k];
+ if(m.run==2)msg='Paused. Press Resume to continue.';
+ const c=m.run==0||m.run==2?'':stat[k][0],lbl=m.run==2?'Paused':m.run==0?'Ready':stat[k][1];
+ $('#bn').className='banner '+c;$('#bn').textContent=msg;$('#mst').className='chip '+(c||(m.run?'':'off'));$('#mst').textContent=lbl;
+ $('#stp').textContent='Step '+({rest:1,move:2,ok:2,hold:2,rep:3,bad:2}[k])+' of 3: '+e.steps[{rest:0,move:1,ok:1,hold:1,rep:2,bad:1}[k]];
+ const a=Math.round(H.cur[e.main]+(m.run==1&&k=='hold'?Math.sin(m.secs*5)*1.5:0)),tg=e.pose[e.main];
+ $('#ang').textContent=a+'° (sample)';$('#angb').style.width=Math.min(100,a/tg*100)+'%';$('#angb').style.background=Math.abs(a-tg)<=8?'var(--ok)':'var(--blue)';
+ $('#hb').style.width=(k=='hold'?m.t/e.hold*100:k=='rep'?100:0)+'%';$('#hl').textContent=k=='hold'?Math.max(0,e.hold-m.t).toFixed(1)+'s left':'';
+ $('#rp').textContent=m.reps+'/'+e.reps;$('#bd').textContent=m.bad;$('#tm').textContent=Math.floor(m.secs/60)+':'+String(Math.floor(m.secs%60)).padStart(2,'0');
+ $('#led').className='led '+(c=='ok'||c=='hold'?'ok':c=='bad'?'bad':m.run==1?'bl':'');
+ H.glow(m.run==1?(c=='bad'?0xe8801e:c?0x1e9e6a:0):0);
+ const b=$('#b1');b.innerHTML=m.run==1?ic('pause')+' Pause':m.run==2?ic('play')+' Resume':ic('play')+' Start'}
+function tick(){const m=S.mon,e=S.ex;if(!m||m.run!=1||!H)return;m.secs+=.1;m.t+=.1;const k=m.ph,half=o=>{const r={};for(const q in o)r[q]=o[q]*.45;return r};
+ if(k=='rest'&&m.t>1.3){m.good=m.n%4!=1;m.n++;m.ph='move';m.t=0;H.set(m.good?e.pose:half(e.pose))}
+ else if(k=='move'&&m.t>1.8){m.t=0;if(m.good)m.ph='ok';else{m.ph='bad';m.bad++;const v=$('#vib');v.classList.remove('on');void v.offsetWidth;v.classList.add('on')}}
+ else if(k=='ok'&&m.t>.8){m.ph='hold';m.t=0}
+ else if(k=='hold'&&m.t>=e.hold){m.ph='rep';m.t=0;m.reps++;H.set(e.pose)}
+ else if((k=='rep'&&m.t>1.3)||(k=='bad'&&m.t>1.6)){m.ph='rest';m.t=0;H.set(Z);if(m.reps>=e.reps){ui();setTimeout(finish,600);m.run=3;return}}
+ ui()}
+function finish(){const m=S.mon;if(!m)return;clearInterval(S.iv);S.last={e:S.ex,reps:m.reps,bad:m.bad,sec:Math.max(m.secs,1)};
+ S.today.ex++;S.today.reps+=m.reps;S.today.sec+=m.secs;S.added=(S.added||0)+1;S.sess.unshift({n:S.ex.n,d:'Today',reps:m.reps,bad:m.bad,sec:m.secs});go('results')}
+function enter(e){S.ex=e;go('detail')}
+function begin(){S.mon={run:0,ph:'rest',t:0,secs:0,reps:0,bad:0,n:0,good:true};S.route='monitor';render();clearInterval(S.iv);S.iv=setInterval(tick,100)}
+const after=(st,ms,fn)=>setTimeout(()=>{if(S.step==st){fn();render()}},ms);
+const A={bt(){S.step='bt-scan';render();after('bt-scan',2800,()=>S.step='bt-found')},
+ btconn(){S.step='pairing';render();after('pairing',2000,()=>{S.conn='Bluetooth';S.step='done'})},
+ wifi(){S.step='wifi';render()},back(){S.step='choose';render()},
+ wconn(){if(!S.net)return toast('Select a network first');if(!S.pw)return toast('Enter the password (any text works in demo)');S.step='pairing';render();after('pairing',2200,()=>{S.conn='Wi-Fi';S.step='done'})},
+ skip(){S.conn='Bluetooth';S.step='done';go('home')},cont(){S.cs=0;go('calib')},recal(){S.cs=0;go('calib')},calskip(){go('home')},caldone(){S.cal=true;go('home')},
+ calstart(){if(!$('#cb')||S.ci&&S.cp)return;S.cp=1;let p=0;S.ci=setInterval(()=>{const b=$('#cb');if(!b){clearInterval(S.ci);return}p+=4;b.style.width=p+'%';if(p>=100){clearInterval(S.ci);S.cs++;render()}},100)},bell(){toast('No new notifications')},
+ disc(){S.conn=null;toast('Glove disconnected (simulated)');render()},recon(){S.step='choose';go('connect')},
+ begin(){S.conn?begin():(toast('Connect the glove, or use demo mode'),begin())},
+ leave(){go('detail')},zin(){H&&H.zoom(-1.5)},zout(){H&&H.zoom(1.5)},
+ start(){const m=S.mon;m.run=m.run==1?2:1;ui()},finish(){finish()},repeat(){begin()},theme(){const d=document.documentElement;d.dataset.theme=d.dataset.theme=='dark'?'light':'dark'}};
+document.addEventListener('click',e=>{const t=e.target.closest('[data-go],[data-ex],[data-a],[data-f],[data-net],[data-t],[data-pref]');if(!t)return;const d=t.dataset;
+ if(d.go)go(d.go);else if(d.ex)enter(EX.find(x=>x.id==d.ex));else if(d.a)A[d.a]();
+ else if(d.f){S.f=d.f;render()}else if(d.net){S.net=d.net;render()}else if(d.t){S[d.t]=!S[d.t];render()}else if(d.pref){S.pref=d.pref;render()}});
+document.addEventListener('input',e=>{if(e.target.id=='pw')S.pw=e.target.value});
+render();
+</script></body></html>
